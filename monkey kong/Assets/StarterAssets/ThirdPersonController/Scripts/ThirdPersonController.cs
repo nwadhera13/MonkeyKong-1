@@ -7,7 +7,7 @@ using Cinemachine;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
-//awhdoawd
+//awhdoawdawdadwda
 namespace StarterAssets
 {
     [RequireComponent(typeof(CharacterController))]
