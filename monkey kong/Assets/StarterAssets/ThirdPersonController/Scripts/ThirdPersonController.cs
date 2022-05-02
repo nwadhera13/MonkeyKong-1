@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using Mirror;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
+using Cinemachine;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -12,8 +14,13 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
     [RequireComponent(typeof(PlayerInput))]
 #endif
-    public class ThirdPersonController : MonoBehaviour
+    public class ThirdPersonController : NetworkBehaviour
     {
+        public GameObject cinemachineCamera;
+        public override void OnStartLocalPlayer()
+        {
+            cinemachineCamera.GetComponent<CinemachineVirtualCamera>().Follow = transform;
+        }
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -213,6 +220,7 @@ namespace StarterAssets
 
         private void Move()
         {
+            if (!isLocalPlayer) { return; }
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
